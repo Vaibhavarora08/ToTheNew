@@ -56,32 +56,7 @@ Our RDS and NFS services are accessible to those two zones but are not HA, we sh
 #### Security
 We use a dedicated VPC for our project, associate restrictive security groups to instances and put our ECS instances, DB and NFS services in private subnets which access the internet through a NAT (ECS instances need to install nfs-utils at startup and pull ECR repo). Only The ELB resides in the public subnet.
 
-#### Implemented architecture
-(NAT and internet gateway are not shown for clarity purposes)
-```
-us-west-2
-+--------------------------------------------------------------+
-|                                                              |
-|           +----------------+    +----------------+           |
-|           |         +-----------------+          |           |
-|           |         |      |ELB |     |          |           |
-|public     |         +-----------------+          | public    |
-|us-west-2a +----------------+ || +----------------+ us-west-2b|
-|                              ||                              |
-|           +----------------+ || +----------------+           |
-|           |                | || |                |           |
-|           | +------------+ | || | +------------+ |           |
-|           | |ECS instance| | || | |ECS instance| |           |
-|           | |            +^------^+            | |           |
-|           | +-----^----^-+ |    | +-----^-----^+ |           |
-|private    |       |    |   |    |       |     |  | private   |
-|us-west-2a +----------------+    +----------------+ us—west—2b|
-|                   |    |                |     |              |
-|                +--+--+ +-------------+--+--+  |              |
-|                | RDS |               | EFS |  |              |
-|                +-----+               +-----+  |              |
-|                      +------------------------+              |
-+--------------------------------------------------------------+
+
 ```
 # To improve
 For production deployments, the following should be implemented:
